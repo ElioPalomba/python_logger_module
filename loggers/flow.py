@@ -59,6 +59,9 @@ class FlowLogger(logging.Logger):
 
     @staticmethod
     def set_func_name(func):
+        if func is None:
+            FlowLogger.func_name = None
+            return
         module_parts = func.__module__.split(".")
         if len(module_parts) > 2:
             FlowLogger.func_name = f"{'.'.join(module_parts[-2:])}.{func.__name__}"
