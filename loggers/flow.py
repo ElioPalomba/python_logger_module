@@ -93,10 +93,17 @@ def update_flow(func):
         FlowLogger.set_function_deepness(function_deepness + 1)
         FlowLogger.set_func_name(func)
 
-        result = await func(*args, **kwargs)
+        exc = None
+        try:
+            result = await func(*args, **kwargs)
+        except Exception as e:
+            exc = e
 
         FlowLogger.set_function_deepness(function_deepness)
-        FlowLogger.set_func_name(None)
+        FlowLogger.set_func_name(func)
+
+        if exc:
+            raise exc
 
         return result
 
